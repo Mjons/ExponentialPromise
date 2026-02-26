@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Exponential Promise is a new podcast from Exponential Ventures about keeping the promise of an exponential, AI-enabled future by tackling under-weighted humanity-scale problems like AMR, sepsis, intolerance, grief, and anger. Join the list to get early access.">
+<title>Exponential Promise – A Podcast by Exponential Ventures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --accent: #6C5CE7;
+  --accent-light: #A29BFE;
+  --accent-glow: rgba(108, 92, 231, 0.15);
+  --bg-primary: #0A0A0F;
+  --bg-secondary: #111118;
+  --bg-card: #16161F;
+  --bg-card-hover: #1C1C28;
+  --text-primary: #F0EFF4;
+  --text-secondary: #9896A8;
+  --text-muted: #5D5B6E;
+  --border: rgba(255,255,255,0.06);
+  --border-accent: rgba(108, 92, 231, 0.3);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.7;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+::selection { background: var(--accent); color: #fff; }
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 1rem 2rem;
+  background: rgba(10, 10, 15, 0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  transition: var(--transition);
+}
+
+.nav-logo {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.15rem;
+  color: var(--text-primary);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+
+.nav-logo span { color: var(--accent-light); }
+
+.nav-links { display: flex; gap: 2rem; align-items: center; }
+
+.nav-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  transition: color var(--transition);
+}
+
+.nav-links a:hover { color: var(--text-primary); }
+
+.nav-cta {
+  background: var(--accent) !important;
+  color: #fff !important;
+  padding: 0.5rem 1.2rem;
+  border-radius: 100px;
+  font-weight: 500 !important;
+}
+
+.nav-cta:hover { opacity: 0.9; }
+
+.mobile-toggle { display: none; background: none; border: none; color: var(--text-primary); font-size: 1.5rem; cursor: pointer; }
+
+/* ─── SECTIONS ─── */
+section { padding: 6rem 2rem; }
+
+.container { max-width: 1100px; margin: 0 auto; }
+
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-light);
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.section-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+}
+
+.section-body {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  max-width: 680px;
+  line-height: 1.8;
+}
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-top: 5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 70% 40%, rgba(108, 92, 231, 0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 20% 80%, rgba(162, 155, 254, 0.04) 0%, transparent 60%);
+}
+
+.hero-grid {
+  position: absolute; inset: 0; z-index: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 70% 70% at 60% 40%, black 20%, transparent 70%);
+}
+
+.hero .container { position: relative; z-index: 1; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 4rem; align-items: center; }
+
+.hero-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-light);
+  margin-bottom: 1.5rem;
+  opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+}
+
+.hero h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(3rem, 6vw, 4.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin-bottom: 1rem;
+  opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--accent-light);
+}
+
+.hero-sub {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.3rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  font-weight: 400;
+  opacity: 0; animation: fadeUp 0.8s 0.55s forwards;
+}
+
+.hero-body {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-bottom: 2.5rem;
+  max-width: 520px;
+  opacity: 0; animation: fadeUp 0.8s 0.7s forwards;
+}
+
+.email-capture {
+  display: flex;
+  gap: 0.75rem;
+  opacity: 0; animation: fadeUp 0.8s 0.85s forwards;
+}
+
+.email-capture input {
+  flex: 1;
+  padding: 0.9rem 1.2rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  color: var(--text-primary);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.email-capture input::placeholder { color: var(--text-muted); }
+.email-capture input:focus { border-color: var(--accent); }
+
+.email-capture button {
+  padding: 0.9rem 2rem;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 100px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.email-capture button:hover { background: #5a4bd4; transform: translateY(-1px); }
+
+.email-micro {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 0.75rem;
+  max-width: 440px;
+  line-height: 1.6;
+  opacity: 0; animation: fadeUp 0.8s 1s forwards;
+}
+
+/* Hero right – abstract visual */
+.hero-visual {
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; animation: fadeIn 1.2s 0.6s forwards;
+}
+
+.hero-orb {
+  width: 380px; height: 380px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, rgba(162, 155, 254, 0.12), rgba(108, 92, 231, 0.04) 60%, transparent 80%);
+  border: 1px solid rgba(108, 92, 231, 0.12);
+  position: relative;
+  animation: orbFloat 8s ease-in-out infinite;
+}
+
+.hero-orb::before {
+  content: '';
+  position: absolute;
+  inset: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(108, 92, 231, 0.08);
+  animation: orbFloat 6s ease-in-out infinite reverse;
+}
+
+.hero-orb::after {
+  content: '';
+  position: absolute;
+  inset: 70px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(108, 92, 231, 0.06), transparent 70%);
+  border: 1px solid rgba(108, 92, 231, 0.06);
+}
+
+.hero-quote {
+  position: absolute;
+  bottom: 10%;
+  right: 5%;
+  font-family: 'DM Serif Display', serif;
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--text-muted);
+  max-width: 240px;
+  text-align: right;
+  line-height: 1.5;
+}
+
+/* ─── WHAT SECTION ─── */
+.what-section { background: var(--bg-secondary); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+.what-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 4rem; align-items: start; }
+
+.what-bullets { list-style: none; display: flex; flex-direction: column; gap: 1.25rem; padding-top: 0.5rem; }
+
+.what-bullets li {
+  position: relative;
+  padding-left: 1.5rem;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.what-bullets li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0.55em;
+  width: 6px; height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+.what-note {
+  margin-top: 2rem;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-style: italic;
+  border-left: 2px solid var(--border-accent);
+  padding-left: 1rem;
+}
+
+/* ─── SERIES 1 ─── */
+.series1-grid { display: grid; grid-template-columns: 1.3fr 0.7fr; gap: 4rem; align-items: start; }
+
+.series1-lead {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 1.25rem;
+  line-height: 1.7;
+}
+
+.series1-body {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+
+.episode-arc h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.episode-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+
+.episode-list li {
+  padding: 0.9rem 1.2rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  transition: all var(--transition);
+  display: flex; align-items: center; gap: 0.75rem;
+}
+
+.episode-list li:hover { border-color: var(--border-accent); background: var(--bg-card); }
+
+.ep-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--accent-light);
+  background: var(--accent-glow);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+.coming-soon-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2.5rem 2rem;
+  text-align: center;
+  position: sticky;
+  top: 6rem;
+}
+
+.badge {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent-light);
+  background: var(--accent-glow);
+  border: 1px solid var(--border-accent);
+  padding: 0.4rem 1rem;
+  border-radius: 100px;
+  margin-bottom: 1.5rem;
+}
+
+.coming-soon-card p {
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.7;
+}
+
+.btn-secondary {
+  display: inline-block;
+  padding: 0.75rem 1.8rem;
+  border: 1px solid var(--border-accent);
+  color: var(--accent-light);
+  border-radius: 100px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all var(--transition);
+  cursor: pointer;
+  background: transparent;
+}
+
+.btn-secondary:hover { background: var(--accent-glow); border-color: var(--accent); }
+
+/* ─── FUTURE SERIES ─── */
+.future-section { background: var(--bg-secondary); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+.future-intro {
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  max-width: 680px;
+  margin-bottom: 3rem;
+  line-height: 1.8;
+}
+
+.future-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
+
+.future-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem 1.75rem;
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.future-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.future-card:hover { border-color: var(--border-accent); background: var(--bg-card-hover); transform: translateY(-2px); }
+.future-card:hover::before { opacity: 1; }
+
+.future-card h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.future-card p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.75;
+}
+
+.future-note {
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-style: italic;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ─── TEAM ─── */
+.team-intro {
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  max-width: 700px;
+  margin-bottom: 3rem;
+  line-height: 1.8;
+}
+
+.team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+
+.team-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem 1.75rem;
+  transition: all var(--transition);
+}
+
+.team-card:hover { border-color: var(--border-accent); }
+
+.team-card h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+}
+
+.team-card .team-role {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-light);
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.team-card p {
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.75;
+}
+
+/* ─── GUESTS / CTA ─── */
+.guests-section {
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.guests-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 4rem; align-items: start; }
+
+.guests-body {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+
+.guest-form { display: flex; flex-direction: column; gap: 1rem; }
+
+.guest-form input,
+.guest-form textarea {
+  padding: 0.85rem 1.1rem;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.92rem;
+  outline: none;
+  transition: border-color var(--transition);
+  resize: vertical;
+}
+
+.guest-form input::placeholder,
+.guest-form textarea::placeholder { color: var(--text-muted); }
+
+.guest-form input:focus,
+.guest-form textarea:focus { border-color: var(--accent); }
+
+.guest-form textarea { min-height: 100px; }
+
+.guest-form button {
+  align-self: flex-start;
+  padding: 0.85rem 2rem;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 100px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.guest-form button:hover { background: #5a4bd4; transform: translateY(-1px); }
+
+.contact-block {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.contact-block p {
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+  margin-bottom: 1rem;
+  line-height: 1.7;
+}
+
+/* ─── FOOTER ─── */
+footer {
+  padding: 2.5rem 2rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-left {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.footer-links { display: flex; gap: 1.5rem; align-items: center; }
+
+.footer-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.82rem;
+  transition: color var(--transition);
+}
+
+.footer-links a:hover { color: var(--text-primary); }
+
+.footer-social { display: flex; gap: 1rem; align-items: center; }
+
+.footer-social a {
+  color: var(--text-muted);
+  transition: color var(--transition);
+  display: flex; align-items: center;
+}
+
+.footer-social a:hover { color: var(--accent-light); }
+
+.footer-social svg { width: 18px; height: 18px; }
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes orbFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-15px) scale(1.02); }
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── MOBILE ─── */
+@media (max-width: 900px) {
+  .hero .container { grid-template-columns: 1fr; }
+  .hero-visual { display: none; }
+  .what-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .series1-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .coming-soon-card { position: static; }
+  .future-cards { grid-template-columns: 1fr; }
+  .team-grid { grid-template-columns: 1fr; }
+  .guests-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .nav-links { display: none; }
+  .mobile-toggle { display: block; }
+  section { padding: 4rem 1.5rem; }
+}
+
+@media (max-width: 600px) {
+  .hero h1 { font-size: 2.4rem; }
+  .email-capture { flex-direction: column; }
+  .email-capture button { width: 100%; }
+  footer { flex-direction: column; text-align: center; }
+}
+
+/* Mobile nav overlay */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background: rgba(10, 10, 15, 0.95);
+  backdrop-filter: blur(20px);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.mobile-nav.open { display: flex; }
+
+.mobile-nav a {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+
+.mobile-nav-close {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-size: 2rem;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Exponential <span>Promise</span></a>
+  <div class="nav-links">
+    <a href="#what">What</a>
+    <a href="#series1">Series 1</a>
+    <a href="#future">Future Series</a>
+    <a href="#team">Team</a>
+    <a href="#guests">Guests</a>
+    <a href="#hero" class="nav-cta">Get Early Access</a>
+  </div>
+  <button class="mobile-toggle" onclick="document.querySelector('.mobile-nav').classList.add('open')" aria-label="Open menu">☰</button>
+</nav>
+
+<!-- Mobile Nav -->
+<div class="mobile-nav">
+  <button class="mobile-nav-close" onclick="this.parentElement.classList.remove('open')" aria-label="Close menu">×</button>
+  <a href="#what" onclick="this.parentElement.classList.remove('open')">What</a>
+  <a href="#series1" onclick="this.parentElement.classList.remove('open')">Series 1</a>
+  <a href="#future" onclick="this.parentElement.classList.remove('open')">Future Series</a>
+  <a href="#team" onclick="this.parentElement.classList.remove('open')">Team</a>
+  <a href="#guests" onclick="this.parentElement.classList.remove('open')">Guests</a>
+  <a href="#hero" onclick="this.parentElement.classList.remove('open')">Get Early Access</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-eyebrow">An Exponential Ventures Podcast</div>
+      <h1>Exponential<br><em>Promise</em></h1>
+      <p class="hero-sub">A podcast about keeping the promise of an exponential future.</p>
+      <p class="hero-body">Exponential Promise explores the fragile gap between the future we could have—a world of AI-enabled abundance—and the one we'll actually get if we ignore the humanity-scale problems in our way. Each short series focuses on one of those issues and what it would really take to move at the speed these crises demand.</p>
+      <form class="email-capture" onsubmit="handleEmail(event, this)">
+        <input type="email" placeholder="Enter your email" required aria-label="Email address">
+        <button type="submit">Join the list</button>
+      </form>
+      <p class="email-micro">We'll email you when we launch and share behind-the-scenes updates on the first series, AMR &amp; Sepsis. No spam.</p>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-orb"></div>
+      <div class="hero-quote">From exponential risk<br>to exponential promise.</div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT -->
+<section class="what-section" id="what">
+  <div class="container">
+    <div class="what-grid">
+      <div class="reveal">
+        <span class="section-label">About the Show</span>
+        <h2 class="section-title">What is Exponential Promise?</h2>
+        <p class="section-body">Exponential Promise explores the difference between a thriving future—where industrial-scale AI helps "solve everything"—and a dystopian one where we solve math and physics but fail to address the crises that abundance depends on. Each short series dives deep into a single humanity-scale issue, bringing together founders, clinicians, policymakers, and systems thinkers to ask what it would actually take to move exponentially faster on that problem.</p>
+      </div>
+      <div class="reveal" style="transition-delay: 0.15s;">
+        <ul class="what-bullets">
+          <li>Short, 4–6-episode series per topic.</li>
+          <li>Focus on under-weighted, civilization-scale problems.</li>
+          <li>Real stories plus expert insight and practical paths to action.</li>
+          <li>Framed by Exponential Ventures' thesis and experience backing founders in these spaces.</li>
+        </ul>
+        <p class="what-note">"We know we can't do everything we would like to. We focus on a few problem spaces where we can help catalyze investable solutions."</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERIES 1 -->
+<section id="series1">
+  <div class="container">
+    <div class="series1-grid">
+      <div class="reveal">
+        <span class="section-label">Debut Series</span>
+        <h2 class="section-title">AMR &amp; Sepsis</h2>
+        <p class="series1-lead">Our debut series looks at antimicrobial resistance and sepsis as quiet civilization-scale threats—and a test of whether we can keep the promise of exponential health.</p>
+        <p class="series1-body">"AMR &amp; Sepsis" treats antimicrobial resistance and sepsis not as background clinical problems, but as threats that could roll back much of antibiotics' contribution to life expectancy and turn AI's exponential promise into a darker future. We'll talk with epidemiologists, economists, regulators, founders, and hospital leaders about why the bottlenecks are incentives and systems—not science—and how exponential organizations and better-aligned capital can accelerate solutions.</p>
+        <div class="episode-arc">
+          <h3>Planned episode arc</h3>
+          <ul class="episode-list">
+            <li><span class="ep-num">EP 01</span> The crisis and the Exponential Ventures framework</li>
+            <li><span class="ep-num">EP 02</span> AMR: the economics of urgency and broken incentives</li>
+            <li><span class="ep-num">EP 03</span> Sepsis: from bedside reality to hospital-scale adoption</li>
+            <li><span class="ep-num">EP 04</span> Regulatory speed: how modernization can unlock exponential health</li>
+            <li><span class="ep-num">EP 05</span> Vision 2030: what changes if we move together now</li>
+          </ul>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay: 0.15s;">
+        <div class="coming-soon-card">
+          <div class="badge">In Production</div>
+          <p>Launching 2026 — Listen on your favourite podcast app and YouTube.</p>
+          <a href="#hero" class="btn-secondary">Notify me at launch</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FUTURE SERIES -->
+<section class="future-section" id="future">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">Coming Next</span>
+      <h2 class="section-title">The Human Side of Abundance</h2>
+      <p class="future-intro">Beyond biology and regulation, Exponential Promise will explore the emotional and social fractures that could make an AI-powered future more painful than prosperous if we leave them unaddressed.</p>
+    </div>
+    <div class="future-cards">
+      <div class="future-card reveal" style="transition-delay: 0.1s;">
+        <h3>Tolerance &amp; Empathy</h3>
+        <p>How do intolerance and the erosion of empathy destabilize societies—and what does it look like to rebuild them through storytelling, education, and new models of connection?</p>
+      </div>
+      <div class="future-card reveal" style="transition-delay: 0.2s;">
+        <h3>Grief</h3>
+        <p>Unresolved grief quietly shapes decisions, relationships, and communities. What would change if we treated grief as a civilization-scale issue and built systems to help people process loss?</p>
+      </div>
+      <div class="future-card reveal" style="transition-delay: 0.3s;">
+        <h3>Anger</h3>
+        <p>Anger is exploding in our homes, workplaces, and politics. We'll explore the 'anger epidemic' as a systems and brain-level problem—and the exponential tools that might help us regulate it at scale.</p>
+      </div>
+    </div>
+    <p class="future-note reveal">These are just some of the humanity-scale issue areas where Exponential Ventures is exploring and supporting investment opportunities. We can't do everything—so we focus where we can matter most.</p>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="container">
+    <div class="reveal">
+      <span class="section-label">The Team</span>
+      <h2 class="section-title">Who's Behind Exponential Promise?</h2>
+      <p class="team-intro">Exponential Promise is created by Exponential Ventures, a fund backing founders solving existential, civilization-scale problems—and helping them move at the speed these crises demand. The show is hosted by members of the Exponential Ventures team alongside partners and collaborators from the broader Exponential Organizations and OpenExO communities.</p>
+    </div>
+    <div class="team-grid">
+      <div class="team-card reveal" style="transition-delay: 0.1s;">
+        <h3>Salim Ismail</h3>
+        <span class="team-role">Co-Founder, Exponential Ventures</span>
+        <p>Lead author of <em>Exponential Organizations</em> and co-founder of Exponential Ventures. Founding executive director of Singularity University, co-founder of OpenExO, and global advisor on exponential strategy.</p>
+      </div>
+      <div class="team-card reveal" style="transition-delay: 0.2s;">
+        <h3>James Drage</h3>
+        <span class="team-role">Co-Founder, Exponential Ventures</span>
+        <p>Ex M&amp;A professional turned serial entrepreneur with 3 exits. Launched his first VC fund in 2005 and a Venture Debt fund in 2015. Now co-founder of Exponential Ventures with several specialized funds.</p>
+      </div>
+      <div class="team-card reveal" style="transition-delay: 0.3s;">
+        <h3>AI Venture Partners</h3>
+        <span class="team-role">Exponential Ventures Team</span>
+        <p>Two full AI venture partners—one qualitative, one quantitative—trained over nearly a year. Backed by 1,500+ certified OpenExO coaches, consultants, and subject matter experts from a 45,000+ member community.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GUESTS -->
+<section class="guests-section" id="guests">
+  <div class="container">
+    <div class="guests-grid">
+      <div class="reveal">
+        <span class="section-label">Get Involved</span>
+        <h2 class="section-title">For Guests, Partners &amp; Collaborators</h2>
+        <p class="guests-body">We're currently scheduling conversations for the AMR &amp; Sepsis series and shaping early series on tolerance, grief, anger, and children's content. If you're working on these problems as a founder, clinician, scientist, researcher, policymaker, storyteller, or systems thinker—and are interested in joining a future episode or collaborating around the fund's investment theses—we'd love to hear from you.</p>
+        <div class="contact-block">
+          <p><strong>Interested in investment, partnership, or co-creating a series?</strong></p>
+          <a href="mailto:hello@exponentialventures.com" class="btn-secondary">Talk to Exponential Ventures</a>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay: 0.15s;">
+        <form class="guest-form" onsubmit="handleGuest(event, this)">
+          <input type="text" placeholder="Your name" required>
+          <input type="email" placeholder="Email address" required>
+          <input type="text" placeholder="Organisation / role">
+          <input type="text" placeholder="Suggested guest or topic">
+          <textarea placeholder="Why this fits Exponential Promise (brief)"></textarea>
+          <button type="submit">Recommend a Guest</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">© 2026 Exponential Ventures. All rights reserved.</div>
+  <div class="footer-links">
+    <a href="#">Exponential Ventures</a>
+    <a href="https://openexo.com" target="_blank" rel="noopener">OpenExO</a>
+    <a href="mailto:hello@exponentialventures.com">Contact</a>
+  </div>
+  <div class="footer-social">
+    <a href="#" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+    </a>
+    <a href="#" aria-label="X / Twitter">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="#" aria-label="YouTube">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+    </a>
+  </div>
+</footer>
+
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Email capture handler (placeholder)
+function handleEmail(e, form) {
+  e.preventDefault();
+  const input = form.querySelector('input');
+  const btn = form.querySelector('button');
+  const originalText = btn.textContent;
+  btn.textContent = '✓ You\'re in!';
+  btn.style.background = '#27ae60';
+  input.value = '';
+  setTimeout(() => {
+    btn.textContent = originalText;
+    btn.style.background = '';
+  }, 3000);
+}
+
+// Guest form handler (placeholder)
+function handleGuest(e, form) {
+  e.preventDefault();
+  const btn = form.querySelector('button');
+  const originalText = btn.textContent;
+  btn.textContent = '✓ Thanks! We\'ll be in touch.';
+  btn.style.background = '#27ae60';
+  form.querySelectorAll('input, textarea').forEach(el => el.value = '');
+  setTimeout(() => {
+    btn.textContent = originalText;
+    btn.style.background = '';
+  }, 4000);
+}
+</script>
+
+</body>
+</html>

@@ -55,6 +55,21 @@
         --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       }
 
+      [data-theme="light"] {
+        --accent: #5a4bd4;
+        --accent-light: #6c5ce7;
+        --accent-glow: rgba(108, 92, 231, 0.1);
+        --bg-primary: #f5f5f7;
+        --bg-secondary: #eaeaed;
+        --bg-card: #ffffff;
+        --bg-card-hover: #f0f0f3;
+        --text-primary: #1a1a2e;
+        --text-secondary: #555568;
+        --text-muted: #8888a0;
+        --border: rgba(0, 0, 0, 0.08);
+        --border-accent: rgba(108, 92, 231, 0.25);
+      }
+
       *,
       *::before,
       *::after {
@@ -80,6 +95,68 @@
       ::selection {
         background: var(--accent);
         color: #fff;
+      }
+
+      /* ─── LIGHT THEME OVERRIDES ─── */
+      [data-theme="light"] nav {
+        background: rgba(245, 245, 247, 0.85);
+      }
+
+      [data-theme="light"] .hero-bg {
+        background:
+          radial-gradient(
+            ellipse 60% 50% at 70% 40%,
+            rgba(108, 92, 231, 0.06) 0%,
+            transparent 70%
+          ),
+          radial-gradient(
+            ellipse 40% 60% at 20% 80%,
+            rgba(162, 155, 254, 0.04) 0%,
+            transparent 60%
+          );
+      }
+
+      [data-theme="light"] .hero-grid {
+        background-image:
+          linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+      }
+
+      [data-theme="light"] .hero-orb {
+        background: radial-gradient(
+          circle at 35% 35%,
+          rgba(162, 155, 254, 0.15),
+          rgba(108, 92, 231, 0.06) 60%,
+          transparent 80%
+        );
+        border-color: rgba(108, 92, 231, 0.15);
+      }
+
+      [data-theme="light"] .mobile-nav {
+        background: rgba(245, 245, 247, 0.97);
+      }
+
+      /* ─── THEME TOGGLE ─── */
+      .theme-toggle {
+        background: none;
+        border: 1px solid var(--border);
+        color: var(--text-secondary);
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all var(--transition);
+        font-size: 1.1rem;
+        line-height: 1;
+        flex-shrink: 0;
+      }
+
+      .theme-toggle:hover {
+        border-color: var(--accent);
+        color: var(--accent-light);
       }
 
       /* ─── NAV ─── */
@@ -915,6 +992,9 @@
         .mobile-toggle {
           display: block;
         }
+        #mobile-theme-toggle {
+          display: flex !important;
+        }
         section {
           padding: 4rem 1.5rem;
         }
@@ -984,7 +1064,23 @@
         <a href="#team">Team</a>
         <a href="#guests">Guests</a>
         <a href="#hero" class="nav-cta">Get Early Access</a>
+        <button
+          class="theme-toggle"
+          onclick="toggleTheme()"
+          aria-label="Toggle theme"
+        >
+          ☀
+        </button>
       </div>
+      <button
+        class="theme-toggle"
+        id="mobile-theme-toggle"
+        onclick="toggleTheme()"
+        aria-label="Toggle theme"
+        style="display: none"
+      >
+        ☀
+      </button>
       <button
         class="mobile-toggle"
         onclick="document.querySelector('.mobile-nav').classList.add('open')"
@@ -1350,6 +1446,32 @@
     </footer>
 
     <script>
+      // Theme toggle
+      function toggleTheme() {
+        const html = document.documentElement;
+        const current = html.getAttribute("data-theme");
+        const next = current === "light" ? "dark" : "light";
+        html.setAttribute("data-theme", next);
+        localStorage.setItem("theme", next);
+        updateToggleIcons(next);
+      }
+
+      function updateToggleIcons(theme) {
+        const icon = theme === "light" ? "\u263E" : "\u2600";
+        document
+          .querySelectorAll(".theme-toggle")
+          .forEach((btn) => (btn.textContent = icon));
+      }
+
+      // Apply saved theme on load
+      (function () {
+        const saved = localStorage.getItem("theme") || "dark";
+        if (saved === "light") {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+        updateToggleIcons(saved);
+      })();
+
       // Scroll reveal
       const observer = new IntersectionObserver(
         (entries) => {

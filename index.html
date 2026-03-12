@@ -1731,38 +1731,97 @@
         .querySelectorAll(".reveal")
         .forEach((el) => observer.observe(el));
 
-      // Email capture handler (placeholder)
-      function handleEmail(e, form) {
+    </script>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      const _sb = supabase.createClient(
+        "https://zshvexghkiouepprbkan.supabase.co",
+        "sb_publishable_QMFXczYXZe8pvAtpbd7Axg_iafD_7nQ"
+      );
+
+      // Newsletter signup (hero + footer forms)
+      async function handleEmail(e, form) {
         e.preventDefault();
         const input = form.querySelector("input");
         const btn = form.querySelector("button");
         const originalText = btn.textContent;
-        btn.textContent = "\u2713 You're in!";
-        btn.style.background = "#27ae60";
+        const email = input.value.trim();
+
+        if (!email) return;
+
+        btn.disabled = true;
+        btn.textContent = "Sending…";
+
+        const { error } = await _sb
+          .from("newsletter_signups")
+          .insert({ email, source: "exponentialpromise.com" });
+
+        if (error && error.code === "23505") {
+          // Duplicate email — still show success (don't reveal existing signups)
+          btn.textContent = "\u2713 You're in!";
+          btn.style.background = "#27ae60";
+        } else if (error) {
+          btn.textContent = "Something went wrong";
+          btn.style.background = "#e74c3c";
+          console.error("Newsletter signup error:", error.message);
+        } else {
+          btn.textContent = "\u2713 You're in!";
+          btn.style.background = "#27ae60";
+        }
+
         input.value = "";
         setTimeout(() => {
           btn.textContent = originalText;
           btn.style.background = "";
+          btn.disabled = false;
         }, 3000);
       }
 
-      // Guest form handler (placeholder)
-      function handleGuest(e, form) {
+      // Guest application form
+      async function handleGuest(e, form) {
         e.preventDefault();
         const btn = form.querySelector("button");
         const originalText = btn.textContent;
-        btn.textContent = "\u2713 Thanks! We'll be in touch.";
-        btn.style.background = "#27ae60";
-        form.querySelectorAll("input, textarea, select").forEach((el) => {
+        const inputs = form.querySelectorAll("input, textarea, select");
+
+        btn.disabled = true;
+        btn.textContent = "Sending…";
+
+        const data = {
+          name: inputs[0].value.trim(),
+          email: inputs[1].value.trim(),
+          organization: inputs[2].value.trim() || null,
+          series_interest: inputs[3].value || null,
+          bio: inputs[4].value.trim() || null,
+        };
+
+        const { error } = await _sb
+          .from("guest_applications")
+          .insert(data);
+
+        if (error) {
+          btn.textContent = "Something went wrong";
+          btn.style.background = "#e74c3c";
+          console.error("Guest application error:", error.message);
+        } else {
+          btn.textContent = "\u2713 Thanks! We'll be in touch.";
+          btn.style.background = "#27ae60";
+        }
+
+        inputs.forEach((el) => {
           if (el.tagName === "SELECT") {
             el.selectedIndex = 0;
           } else {
             el.value = "";
           }
         });
+
         setTimeout(() => {
           btn.textContent = originalText;
           btn.style.background = "";
+          btn.disabled = false;
         }, 4000);
       }
     </script>

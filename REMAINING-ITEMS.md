@@ -29,7 +29,7 @@
 
 ### Minor
 
-- **Footer "Exponential Ventures" link** — still `#`. Needs real fund site URL when available.
+- **Footer "Exponential Venture Capital" link** — still `#`. Needs real fund site URL when available.
 
 ### Phase 3 — Post-launch enhancements
 
@@ -48,4 +48,4 @@
 
 - All Phase 1 and Phase 2 items are complete.
 - Phase 3 items are post-launch and don't block guest outreach.
-- Only remaining blocker is the Exponential Ventures fund site URL for the footer link.
+- Only remaining blocker is the Exponential Venture Capital fund site URL for the footer link.
